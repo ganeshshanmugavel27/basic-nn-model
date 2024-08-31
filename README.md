@@ -6,11 +6,14 @@ To develop a neural network regression model for the given dataset.
 
 ## THEORY
 
-Explain the problem statement
+1.Design and implement a neural network regression model to accurately predict a continuous target variable based on a set of input features within the provided dataset. 
+2.The objective is to develop a robust and reliable predictive model that can capture complex relationships in the data, ultimately yielding accurate and precise predictions of the target variable. 
+3.The model should be trained, validated, and tested to ensure its generalization capabilities on unseen data, with an emphasis on optimizing performance metrics such as mean squared error or mean absolute error.
+This regression model aims to provide valuable insights into the underlying patterns and trends within the dataset, facilitating enhanced decision-making and understanding of the target variable's behavior.
 
 ## Neural Network Model
 
-Include the neural network model diagram.
+![alt text](image.png)
 
 ## DESIGN STEPS
 
@@ -43,32 +46,80 @@ Plot the performance plot
 Evaluate the model with the testing data.
 
 ## PROGRAM
-### Name:
-### Register Number:
+### Name: GANESH S
+### Register Number: 21222040042
 ```python
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
 
-Include your code here
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+
+from google.colab import auth
+import gspread
+from google.auth import default
+
+from google.colab import auth
+import gspread
+from google.auth import default
+import pandas as pd  
+
+auth.authenticate_user()
+creds, _ = default()
+gc = gspread.authorize(creds)
+worksheet = gc.open('Deeplearning').sheet1
+data = worksheet.get_all_values()
+dataset1 = pd.DataFrame(data[1:], columns=data[0])
+dataset1 = dataset1.astype({'Input': 'int', 'Output': 'int'})
+dataset1.head()
+
+x = dataset1[['Input']].values
+y = dataset1[['Output']].values
+
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.33,random_state=33)
+
+Scaler = MinMaxScaler()
+Scaler.fit(x_train)
+x_train1 = Scaler.transform(x_train)
+
+ai_brain = Sequential([
+    Dense(8,activation = 'relu'),
+    Dense(10,activation = 'relu'),
+    Dense(1)
+])
+
+ai_brain.compile(optimizer = 'rmsprop', loss = 'mse')
+ai_brain.fit(x_train1,y_train,epochs = 1000)
+
+loss_df = pd.DataFrame(ai_brain.history.history)
+loss_df.plot()
+x_test1 = Scaler.transform(x_test)
+ai_brain.evaluate(x_test1,y_test)
+x_n1=[[4]]
+x_n1_1 = Scaler.transform(x_n1)
+ai_brain.predict(x_n1_1)
+
 
 
 ```
 ## Dataset Information
 
-Include screenshot of the dataset
-
+![alt text](image-1.png)
 ## OUTPUT
 
 ### Training Loss Vs Iteration Plot
 
-Include your plot here
+![alt text](image-2.png)
 
 ### Test Data Root Mean Squared Error
 
-Find the test data root mean squared error
+![alt text](image-3.png)
 
 ### New Sample Data Prediction
 
-Include your sample input and output here
+![alt text](image-4.png)
 
 ## RESULT
 
-Include your result here
+To develop a neural network regression model for the given dataset is created sucessfully.
